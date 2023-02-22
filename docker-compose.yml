@@ -1,17 +1,22 @@
-version: "3.2"
+version: "3.1"
+
 services:
+
   mongodb:
-    image: mongo:3.2.4
+    image: mongo:latest
     container_name: mongo-db
+    env_file:
+      - ./.env
     ports:
-      - "27017:27017"
-    command: --smallfiles
+      - $MONGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
   app:
     depends_on:
       - mongodb
     build: .
     image: ma/mongo-boot-api
+    env_file:
+      - ./.env
     ports:
-      - "8081:8081"
+      - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
     links:
       - mongodb
